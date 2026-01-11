@@ -1,0 +1,17 @@
+pandas
+openpyxl
+python-dotenv
+langchain-openai
+langchain-experimental
+openai
+tabulate
+djangorestframework
+django
+pandas
+python-dotenv
+langchain
+langchain-openai
+langchain-experimental
+openpyxl
+Django
+djangorestframework

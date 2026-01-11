@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HRBP AI Assistant</title>
+    <style>
+        body {
+            background: #f4f6f9;
+            font-family: Arial, sans-serif;
+        }
+        .chat-container {
+            width: 650px;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: #fafafa;
+        }
+        .user { text-align: right; margin: 10px; }
+        .bot { text-align: left; margin: 10px; background: #eef2ff; padding: 8px; border-radius: 5px; }
+        .input-area { display: flex; margin-top: 10px; }
+        input { flex: 1; padding: 10px; font-size: 14px; }
+        button {
+            padding: 10px;
+            margin-left: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover { background-color: #357abd; }
+        h2 { text-align: center; }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <h2>🤖 HRBP AI Assistant</h2>
+    <div id="chat-box"></div>
+    <div class="input-area">
+        <input id="message" placeholder="Ask an HR question..." />
+        <button onclick="send()">Send</button>
+    </div>
+</div>
+
+<script>
+async function send() {
+    const input = document.getElementById("message");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    addMessage("You", msg);
+    input.value = "";
+
+    try {
+        // ✅ Use the correct API endpoint
+        const res = await fetch("/chat/api/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // Optional: for CSRF protection
+                // "X-CSRFToken": getCookie('csrftoken')
+            },
+            body: JSON.stringify({ message: msg })
+        });
+
+        // Check if response is JSON
+        if (!res.ok) {
+            const text = await res.text(); // in case server returns HTML
+            addMessage("HRBP AI", "Server error: " + text);
+            return;
+        }
+
+        const data = await res.json();
+        if (data.reply) {
+            addMessage("HRBP AI", data.reply);
+        } else {
+            addMessage("HRBP AI", "Error: " + (data.error || "Unknown error"));
+        }
+    } catch (err) {
+        addMessage("HRBP AI", "Error: " + err.message);
+    }
+}
+
+function addMessage(sender, text) {
+    const box = document.getElementById("chat-box");
+    const div = document.createElement("div");
+    div.className = sender === "You" ? "user" : "bot";
+    div.innerHTML = `<b>${sender}</b><br>${text.replace(/\n/g, "<br>")}`;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+</script>
+</body>
+</html>
