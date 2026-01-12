@@ -10,7 +10,7 @@ env/
 ENV/
 *.env
 # Environments
-.env
+.env/
 .venv
 env/
 venv/
