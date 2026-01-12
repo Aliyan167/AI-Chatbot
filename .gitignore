@@ -1,8 +1,45 @@
-/.venv/
-/db.sqlite3/
-/venv/
-.idea/
-.env/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
+# Virtual Environment
 venv/
+env/
+ENV/
+*.env
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+db.sqlite3
+db.sqlite3-journal
+
 db.sqlite3/
+db.sqlite3-journal/
+
+
+# Django
+*.sqlite3
+db.sqlite3
+/staticfiles/
+/media/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Environment variables
+.env
